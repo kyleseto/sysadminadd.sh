@@ -1,7 +1,7 @@
 sysadminadd.sh
 ==============
 
-This script is used to create accounts with tmp password and to if available copy ssh public keys.
+This script is used to create accounts with tmp password and if available copy ssh public keys.
 It also locks old accounts and during creation attempts to email the users for the accounts
 
 This script needs to be run as root
