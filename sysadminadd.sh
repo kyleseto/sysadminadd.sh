@@ -59,7 +59,8 @@ if [ $EUID -eq 0 ]; then
 			useradd -c "${NAME[$COUNT]}" -s $BASH_LOC -u ${UIDS[$COUNT]} -g $GROUP -d $homedir -G adm $username
 			echo $PASS
 			# Set password for the account
-			echo $PASS | passwd $username  --stdin -e
+			echo $PASS | passwd $username  --stdin
+			chage -d 0 $username
 			# Set the flag to say password has been set for the account
 			passbool="1"
 		fi
