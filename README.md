@@ -11,10 +11,10 @@ For ssh keys to be copied it must exist in the same directory as this script and
   
 This is a primitive script that calls a number of standard binaries.
 While these are standard binaries the behaviour will change with the different versions and implemented flags.
-Binaries called:
-useradd
-passwd
-mkdir
-chmod
-sendmail (This should be tested and modified for different version and implementations.)
-openssl
+ Binaries called:
+ useradd
+ passwd
+ mkdir
+ chmod
+ sendmail (This should be tested and modified for different version and implementations.)
+ openssl
