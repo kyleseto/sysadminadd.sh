@@ -54,7 +54,7 @@ if [ $EUID -eq 0 ]; then
 			homedir="/home/$username"
 			echo $username is being created 
 			# Create a random password
-			PASS=`openssl rand -base64 10`
+			PASS=`openssl rand -base64 12 | cut -c 1-10`
 			# Create the account 
 			useradd -c "${NAME[$COUNT]}" -s $BASH_LOC -u ${UIDS[$COUNT]} -g $GROUP -d $homedir -G adm $username
 			echo $PASS
@@ -67,12 +67,13 @@ if [ $EUID -eq 0 ]; then
 		if [ -f $username.pub ] ; then
 			#Make the directory for the users .ssh profile
 			mkdir -p $homedir/.ssh/
-			chmod 700 $homedir/.ssh/
+			chmod -R 700 $homedir/
 			#Check the users has a public key to be placed on the machine
 			#force copy the key to their ssh profile
 			echo "$username:Public key is being copied"
 			cat $username.pub >> $homedir/.ssh/authorized_keys
 			chmod 600 $homedir/.ssh/authorized_keys
+			chown -R $username $homedir/
 			#Test if it worked
 			echo "$username:Key copied correctly"
 			sshbool="1"
@@ -85,7 +86,7 @@ if [ $EUID -eq 0 ]; then
 			if [ $sshbool -eq "1" ]; then
 				# Emails user that key and ssh has been copied
 				(
-					echo "Subject:Account Created on $(hostname -f) and ssh key copied"
+					echo "Subject:Account Created on $(hostname -f) with tmp password $PASS and ssh key copied"
 					echo "From:root@$(hostname -f)"
 					echo "Your temporary password is $PASS . Your ssh public key has also been added."
 				)  | sendmail $username@$email ;
