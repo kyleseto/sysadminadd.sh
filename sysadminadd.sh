@@ -67,13 +67,14 @@ if [ $EUID -eq 0 ]; then
 		if [ -f $username.pub ] ; then
 			#Make the directory for the users .ssh profile
 			mkdir -p $homedir/.ssh/
-			chmod -R 700 $homedir/
+			chmod 700 $homedir/
 			#Check the users has a public key to be placed on the machine
 			#force copy the key to their ssh profile
 			echo "$username:Public key is being copied"
 			cat $username.pub >> $homedir/.ssh/authorized_keys
 			chmod 600 $homedir/.ssh/authorized_keys
-			chown -R $username $homedir/
+			chown $username $homedir/
+			chown $username $homedir/.ssh/authorized_keys
 			#Test if it worked
 			echo "$username:Key copied correctly"
 			sshbool="1"
