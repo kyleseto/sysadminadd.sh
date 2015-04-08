@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################################################################################
-# Version 1.1
+# Version 1.11
 #
 # Created by kyle 
 #
@@ -112,7 +112,7 @@ if [ $EUID -eq 0 ]; then
 		else
 			echo "$username:Account not created and key not copied. No email sent."
 		fi
-		COUNT=$($COUNT + 1 )
+		((COUNT=COUNT+1))
 	done 
 
 	# Append the sys group to the Sudoers file
@@ -137,7 +137,7 @@ if [ $EUID -eq 0 ]; then
 			echo "   $lockuser:Does not exist"
 		fi
 		# loops through users
-		COUNT=$($COUNT + 1)
+		((COUNT=COUNT+1))
 	done
 else
 	# Script need root permissions
