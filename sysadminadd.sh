@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################################################################################
-# Version 1.11
+# Version 1.12
 #
 # Created by kyle 
 #
@@ -15,7 +15,7 @@
 #######################################################################################################################
 
 #email string for the domain of the account
-email=<company.org>
+email=<"company.org">
 #default shell you want for users
 BASH_LOC="/bin/bash"
 #default group users will be placed in
@@ -32,6 +32,20 @@ LOCKUSERS=( "OldUser" "OlderUser" "DodgeAdminUser" )
 #Check that the user is root
 #root permission are need for some of the binaries that are called
 if [ $EUID -eq 0 ]; then
+
+	# Check if the utilities exist to run script
+	PROGS="id chage chpasswd passwd sendmail useradd" 
+
+	# Run through the list of need utilities
+	for i in $PROGS
+	do
+		# Check if the computer can find it
+		if ( ! `which $i > /dev/null 2>&1` );then
+			# If the untilities doesn't exist print error and then exit
+			echo "Program '$i' does not exist, exiting..."
+			exit 69
+		fi
+	done
 
 	#Counter for the users to be looped 
 	COUNT=0
@@ -58,7 +72,7 @@ if [ $EUID -eq 0 ]; then
 			useradd -c "${NAME[$COUNT]}" -s "$BASH_LOC" -u "${UIDS[$COUNT]}" -g "$GROUP" -d "$homedir" -G sys "$username"
 			echo "$PASS"
 			# Set password for the account
-			echo "$PASS" | passwd "$username"  --stdin
+			echo "$username:$PASS" | chpasswd
 			chage -d 0 "$username"
 			# Set the flag to say password has been set for the account
 			passbool="1"
